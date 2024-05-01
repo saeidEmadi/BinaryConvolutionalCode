@@ -1,6 +1,6 @@
 #include <iostream>
 
 int main(){
-    std::cout << "Hello World!\n";
-    std::cout << "Drtiver ";
+    std::cout << "\n [Binary Convolutional Code run ...]";
+    return 0;
 }
