@@ -1,9 +1,9 @@
 #pragma once
-/* Binary Convolutional Codes Encdoer */
+/* Binary Convolutional Codes Encoder */
 class encoder{
 	public : 
 		/*
-			Description: Binary Convolutional Codes Encdoer Constructor.
+			Description: Binary Convolutional Codes Encoder Constructor.
 			Parameters:
 				- void
 			Returns:
