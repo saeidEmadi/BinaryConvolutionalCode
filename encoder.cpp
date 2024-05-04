@@ -15,7 +15,7 @@ encoder::encoder() {
 __int8 encoder::encode(bool bit) {
 	__int8 c2 = (state & 0x1) ^ bit;
 	__int8 c1 = ((state & 0x1) ^ bit ^ ((state & 0x2) >> 1));
-	//this->logLevel(this->state, bit,((c1 << 1) | (c2 | 0x0)),(bit << 1) | ((state & 0x2) >> 1));
+	this->logLevel(this->state, bit,((c1 << 1) | (c2 | 0x0)),(bit << 1) | ((state & 0x2) >> 1));
 	this->state = (bit << 1) | ((state & 0x2) >> 1);
 	return ((c1 << 1) | (c2 | 0x0));
 }
