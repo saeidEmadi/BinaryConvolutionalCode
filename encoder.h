@@ -28,7 +28,7 @@ class encoder{
 		__int8 state : 2;
 		/*
 			private func logLevel()
-			define print patter for print
+			define print pattern for print
 			Machine state, input Bit
 			encoded bit and nextState
 		*/
