@@ -12,12 +12,16 @@ encoder::encoder() {
 	state = 0;
 }
 
-__int8 encoder::encode(bool bit) {
-	__int8 c2 = (state & 0x1) ^ bit;
-	__int8 c1 = ((state & 0x1) ^ bit ^ ((state & 0x2) >> 1));
-	this->logLevel(this->state, bit,((c1 << 1) | (c2 | 0x0)), this->nextState(bit, state));
+__int8 const encoder::encode(bool bit) {
+	__int8 decodedMsg = this->encodedMsg(bit, this->state);
+	this->logLevel(this->state, bit, decodedMsg, this->nextState(bit, this->state));
 	this->state = this->nextState(bit, state);
-	return ((c1 << 1) | (c2 | 0x0));
+	return decodedMsg;
+}
+
+__int8 encoder::encodedMsg(const bool& bit, const __int8& state) {
+	return ((((state & 0x1) ^ bit ^ ((state & 0x2) >> 1)) << 1) 
+		| (((state & 0x1) ^ bit) | 0x0));
 }
 
 __int8 encoder::nextState(const bool &bit, const __int8 &state) {

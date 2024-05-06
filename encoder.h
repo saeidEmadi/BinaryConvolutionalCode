@@ -19,7 +19,7 @@ class encoder{
 			Returns:
 				- __int8 encoded message
 		*/
-		__int8 encode(bool bit);
+		__int8 const encode(bool bit);
 		~encoder();					// class destructor
 
 	private : 
@@ -28,6 +28,15 @@ class encoder{
 			2 bit use for show state
 		*/
 		__int8 state : 2;
+		/*
+			Description: encode one bit of message and return encoded .
+			Parameters:
+				- const bool (1: True, 0: False) input bit pointer
+				- const __int8 state pointer
+			Returns:
+				- __int8 encoded message
+		*/
+		__int8 encodedMsg(const bool& bit, const __int8& state);
 		/*
 			get Next State
 			Parameters:
