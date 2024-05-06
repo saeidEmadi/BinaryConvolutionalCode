@@ -5,6 +5,14 @@
 class node{
 	public :
 		/*
+			Description: node (Path) Constructor.
+			Parameters:
+				- void
+			Returns:
+				- void
+		*/
+		node();
+		/*
 			Description: set node state
 			Parameters:
 				- __int8 state value
@@ -69,7 +77,7 @@ class node{
 				- const __int8 : return distance value
 		*/
 		__int8 const getDistance();
-
+		~node();					// class destructor
 	private :
 		/*
 			2bit __int8
