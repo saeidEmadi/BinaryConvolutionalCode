@@ -15,12 +15,17 @@ encoder::encoder() {
 __int8 encoder::encode(bool bit) {
 	__int8 c2 = (state & 0x1) ^ bit;
 	__int8 c1 = ((state & 0x1) ^ bit ^ ((state & 0x2) >> 1));
-	this->logLevel(this->state, bit,((c1 << 1) | (c2 | 0x0)),(bit << 1) | ((state & 0x2) >> 1));
-	this->state = (bit << 1) | ((state & 0x2) >> 1);
+	this->logLevel(this->state, bit,((c1 << 1) | (c2 | 0x0)), this->nextState(bit, state));
+	this->state = this->nextState(bit, state);
 	return ((c1 << 1) | (c2 | 0x0));
 }
 
-void encoder::logLevel(__int8 state, bool bit, __int8 decoded, __int8 nextState) {
+__int8 encoder::nextState(const bool &bit, const __int8 &state) {
+	return (bit << 1) | ((state & 0x2) >> 1);
+}
+
+void encoder::logLevel(const __int8 &state, const bool &bit,
+	const __int8 &decoded, const __int8 &nextState) {
 	std::cout << std::endl <<
 		"[---- bit log ----]" << std::endl <<
 		"  state : " << std::bitset<2>(state) << std::endl <<
