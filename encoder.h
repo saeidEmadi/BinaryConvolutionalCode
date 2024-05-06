@@ -1,4 +1,6 @@
 #pragma once
+#ifndef ENCODER_H
+#define ENCODER_H
 /* Binary Convolutional Codes Encoder */
 class encoder{
 	public : 
@@ -27,10 +29,27 @@ class encoder{
 		*/
 		__int8 state : 2;
 		/*
+			get Next State
+			Parameters:
+				- const bool bit : input bit refrence
+				- const __int8 state refrence
+			Returns:
+				- __int8 state
+		*/
+		__int8 nextState(const bool& bit, const __int8& state);
+		/*
 			private func logLevel()
 			define print pattern for print
 			Machine state, input Bit
 			encoded bit and nextState
+			Parameters:
+				- const __int8 state pointer
+				- const bool bit : input bit pointer
+				- const __int8 decoded : decoded message pointer
+				- const __int8 nextState pointer
 		*/
-		void logLevel(__int8 state, bool bit, __int8 decoded, __int8 nextState);
+		void logLevel(const __int8& state, const bool& bit,
+			const __int8& decoded, const __int8& nextState);
 };
+
+#endif
