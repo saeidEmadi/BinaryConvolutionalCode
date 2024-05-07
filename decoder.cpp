@@ -17,14 +17,28 @@ decoder::decoder() {
 }
 
 unsigned __int8 decoder::decode(unsigned __int8 recv) {
-	std::cout <<  "decoder : " << std::bitset<8>(recv) << std::endl;
-	node * n = graphTracer(0,recv,1);
-	for (int i = 1; n->getNextFirstStateNode() != nullptr; i++) {
+	std::cout << "decoder : " << std::bitset<8>(recv) << std::endl;
+	node* n = graphTracer(0, recv, 1);
+	printStates(n);
+	/*for (int i = 1; n->getNextFirstStateNode() != nullptr; i++) {
 		std::cout << "i : " << i << " | " << std::bitset<8>(n->getNextFirstStateNodeDistance()&0x03) << std::endl;
 		std::cout << "i : " << i << " | " << std::bitset<8>(n->getNextScondStateNodeDistance() & 0x03) << std::endl;
 		n = n->getNextFirstStateNode();
-	}
+	}*/
 	return 0;
+}
+
+void decoder::printStates(node* n) {
+	if (n->getNextFirstStateNode() == nullptr) {
+		return;
+	}
+	std::cout << "state : " << std::bitset<8>(n->getState()) << std::endl;
+	std::cout << "NextFirstStateNodeDistance : " << std::bitset<8>(n->getNextFirstStateNodeDistance() & 0x03) << std::endl;
+	std::cout << "NextScondStateNodeDistance : " << std::bitset<8>(n->getNextScondStateNodeDistance() & 0x03) << std::endl;
+	std::cout << "getNextFirstStateNode()->getState() : " << std::bitset<8>(n->getNextFirstStateNode()->getState()) << std::endl;
+	std::cout << "getNextScondStateNode()->getState() : " << std::bitset<8>(n->getNextScondStateNode()->getState()) << std::endl;
+	this->printStates(n->getNextFirstStateNode());
+	this->printStates(n->getNextScondStateNode());
 }
 
 node* decoder::graphTracer(unsigned __int8 state, unsigned __int8 data, unsigned __int8 level){
