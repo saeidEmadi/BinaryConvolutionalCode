@@ -1,6 +1,13 @@
 #include "decoder.h"
 #include <iostream>
 #include <bitset>
+/*
+	// No. of state check
+	We have used unsigned __int8 data type value in this simulation,
+	it is obvious that it cannot be checked more than 4 times 
+	(with 8 bits, 4 bits can be decoded).
+*/
+#define MAX_STATE_CEHCK 4
 
 decoder::decoder() {
 	/* create new object and initial values */
@@ -9,55 +16,67 @@ decoder::decoder() {
 		<< std::endl;
 }
 
-__int8 decoder::decode(__int8 recv) {
-	int a[4][2] = { {0,2},{0,2},{1,3},{1,3} };
-
-	//this->distanceCal(0, 0, recv);
-	//for (int i = 0; i < 4; i++) {
-	//	// rows = 00 , 10, 01, 11
-	//	__int8 bit = (recv & 0xE0) >> 6;
-	//	for (int j = 0; j < rout[i].size(); j++) {
-	//		for (int k = 0; k < 2; k++) {
-	//			std::cout << static_cast<int>(this->hammingDistance(a[j][k],bit)) << std::endl;
-	//		}
-	//	}
-	//	std::cout << "new colml" << std::endl;
-	//	recv = (recv << 2);
-	//}
+unsigned __int8 decoder::decode(unsigned __int8 recv) {
+	std::cout <<  "decoder : " << std::bitset<8>(recv) << std::endl;
+	node * n = graphTracer(0,recv,1);
+	for (int i = 1; n->getNextFirstStateNode() != nullptr; i++) {
+		std::cout << "i : " << i << " | " << std::bitset<8>(n->getNextFirstStateNodeDistance()&0x03) << std::endl;
+		std::cout << "i : " << i << " | " << std::bitset<8>(n->getNextScondStateNodeDistance() & 0x03) << std::endl;
+		n = n->getNextFirstStateNode();
+	}
 	return 0;
 }
 
-__int8 decoder::distanceCal(int level, __int8 state, __int8 bit) {
-	/*
-	if (level == 5) {
-		return 0;
+node* decoder::graphTracer(unsigned __int8 state, unsigned __int8 data, unsigned __int8 level){
+	// return point | break point of recursive loop
+	if (level == MAX_STATE_CEHCK + 2) {
+		return nullptr;
 	}
-	switch(state){
+
+	// set next states value
+	// -1 == null value | initial value
+	unsigned __int8 nextFirstState = -1,
+		nextFirstStateIO = -1,
+		nextScondState = -1,
+		nextScondStateIO = -1;
+
+	switch (state){
 		case 0:
-			std::cout << this->distanceCal(level + 1, 0, (bit << 2) & 0xE0) + this->hammingDistance(state, (bit & 0xE0) >> 6) << std::endl;
-			std::cout << this->distanceCal(level + 1, 2, (bit << 2) & 0xE0) + this->hammingDistance(state, (bit & 0xE0) >> 6) << std::endl;
-			break;
-		case 1:
-			std::cout << this->distanceCal(level + 1, 0, (bit << 2) & 0xE0) + this->hammingDistance(state, (bit & 0xE0) >> 6) << std::endl;
-			std::cout << this->distanceCal(level + 1, 2, (bit << 2) & 0xE0) + this->hammingDistance(state, (bit & 0xE0) >> 6) << std::endl;
+			nextFirstState = 0;
+			nextFirstStateIO = 0,
+			nextScondState = 2,
+			nextScondStateIO = 3;
 			break;
 		case 2:
-			std::cout << this->distanceCal(level + 1, 1, (bit << 2) & 0xE0) + this->hammingDistance(state, (bit & 0xE0) >> 6) << std::endl;
-			std::cout << this->distanceCal(level + 1, 3, (bit << 2) & 0xE0) + this->hammingDistance(state, (bit & 0xE0) >> 6) << std::endl;
+			nextFirstState = 1;
+			nextFirstStateIO = 1,
+			nextScondState = 3,
+			nextScondStateIO = 2;
+			break;
+		case 1:
+			nextFirstState = 0;
+			nextFirstStateIO = 3,
+			nextScondState = 2,
+			nextScondStateIO = 0;
 			break;
 		case 3:
-			std::cout << this->distanceCal(level + 1, 1, (bit << 2) & 0xE0) + this->hammingDistance(state, (bit & 0xE0) >> 6) << std::endl;
-			std::cout << this->distanceCal(level + 1, 3, (bit << 2) & 0xE0) + this->hammingDistance(state, (bit & 0xE0) >> 6) << std::endl;
+			nextFirstState = 1;
+			nextFirstStateIO = 2,
+			nextScondState = 3,
+			nextScondStateIO = 1;
 			break;
-	default:
-		break;
 	}
-	*/
-	return 0;
+	node* stateNode = new node(state & 0x03);
+	stateNode->setNextFirstStateNode(*this->graphTracer(nextFirstState, data, level + 1));
+	stateNode->setNextScondStateNode(*this->graphTracer(nextScondState, data, level + 1));
+	stateNode->setNextFirstStateNodeDistance(this->hammingDistance(data,nextFirstStateIO));
+	stateNode->setNextScondStateNodeDistance(this->hammingDistance(data,nextScondStateIO));
+	return stateNode;
 }
-__int8 decoder::hammingDistance(__int8 x, __int8 y) {
-	int distance = 0;
-	int xorResult = x ^ y; // XOR of the two integers
+
+unsigned __int8 decoder::hammingDistance(unsigned __int8 x, unsigned __int8 y) {
+	__int8 distance = 0;
+	unsigned __int8 xorResult = x ^ y; // XOR of the two unsigned __int8
 	// Count the number of set bits in the XOR result
 	while (xorResult) {
 		distance += xorResult & 1;
@@ -66,14 +85,7 @@ __int8 decoder::hammingDistance(__int8 x, __int8 y) {
 	return distance;
 }
 
-void decoder::logLevel(__int8 state, __int8 recv, __int8 decoded, __int8 nextState) {
-	std::cout << std::endl <<
-		"[---- bit log ----]" << std::endl <<
-		"  state : " << std::bitset<2>(state) << std::endl <<
-		"  nextState : " << std::bitset<2>(nextState) << std::endl <<
-		"  recv : " << std::bitset<1>(recv) << std::endl <<
-		"  encoded : " << std::bitset<2>(decoded) << std::endl <<
-		"[----         ----]" << std::endl;
+void decoder::logLevel() {
 }
 
 decoder :: ~decoder() {
