@@ -3,30 +3,31 @@
 #include <exception>
 #include <iostream>
 
-node::node() {
-	/* create new object and initial values */
-	this->setState(0);
-	this->setDistance(0);
-	this->NextFirstStateNode = NULL;
-	this->NextScondStateNode = NULL;
+/* create new object and initial values */
+
+node::node(unsigned __int8 state){
+	this->setState(state);
+	this->NextFirstStateNode = nullptr;
+	this->NextScondStateNode = nullptr;
+	this->setNextFirstStateNodeDistance(0);
+	this->setNextScondStateNodeDistance(0);
 }
 
-__int8 const node::getDistance() {
-	return this->distance;
-}
-
-bool node::setDistance(__int8 distance) {
+bool node::setState(unsigned __int8 state) {
 	try {
-		this->distance = distance;
+		this->state = state;
 		return true;
 	}
 	catch (const std::exception&) {
-		std::cout << "can't assing distance" << std::endl;
+		std::cout << "can't assing state" << std::endl;
 		return false;
 	}
 	return false;
 }
 
+unsigned __int8 const node::getState() {
+	return this->state;
+}
 node* node::getNextScondStateNode() {
 	return this->NextScondStateNode;
 }
@@ -58,15 +59,31 @@ bool node::setNextFirstStateNode(node &nextNode) {
 	return false;
 }
 
-__int8 const node::getState() {
-	return this->state;
+unsigned __int8 const node::getNextFirstStateNodeDistance() {
+	return this->NextFirstStateNodeDistance;
 }
 
-bool node::setState(__int8 state) {
+unsigned __int8 const node::getNextScondStateNodeDistance() {
+	return this->NextScondStateNodeDistance;
+}
+
+bool node::setNextFirstStateNodeDistance(unsigned __int8 state) {
 	try{
-		this->state = state;
+		this->NextFirstStateNodeDistance = state;
 		return true;
 	}catch (const std::exception&){
+		std::cout << "can't assing state" << std::endl;
+		return false;
+	}
+	return false;
+}
+
+bool node::setNextScondStateNodeDistance(unsigned __int8 state) {
+	try {
+		this->NextScondStateNodeDistance = state;
+		return true;
+	}
+	catch (const std::exception&) {
 		std::cout << "can't assing state" << std::endl;
 		return false;
 	}

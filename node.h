@@ -7,84 +7,103 @@ class node{
 		/*
 			Description: node (Path) Constructor.
 			Parameters:
-				- void
+				- unsigned __int8 state
+				- node NextFirstStateNode
+				- node NextScondStateNode
+				- unsigned __int8 distance
 			Returns:
 				- void
 		*/
-		node();
+		node(unsigned __int8 state);
 		/*
 			Description: set node state
 			Parameters:
-				- __int8 state value
+				- unsigned __int8 state value
 			Returns:
 				- bool : return assert value
 		*/
-		bool setState(__int8 state);
+		bool setState(unsigned __int8 state);
 		/*
 			Description: get node state
 			Parameters:
 				- void
 			Returns:
-				- const __int8 : return state value
+				- const unsigned __int8 : return state value
 		*/
-		__int8 const getState();
+		unsigned __int8 const getState();
 		/*
 			Description: set Next First State Node
 			Parameters:
-				- node nextNode
+				- node nextNode pointer
 			Returns:
 				- bool : return assert value
 		*/
-		bool setNextFirstStateNode(node nextNode);
+		bool setNextFirstStateNode(node &nextNode);
 		/*
 			Description: get Next First State Node
 			Parameters:
 				- void
 			Returns:
-				- const node NextFirstStateNode
+				- node NextFirstStateNode pointer
 		*/
-		node const getNextFirstStateNode();
+		node * getNextFirstStateNode();
 		/*
 			Description: set Next Scond State Node
 			Parameters:
-				- node nextNode
+				- node nextNode pointer
 			Returns:
 				- bool : return assert value
 		*/
-		bool setNextScondStateNode(node nextNode);
+		bool setNextScondStateNode(node &nextNode);
 		/*
 			Description: get Next Scond State Node
 			Parameters:
 				- void
 			Returns:
-				- const node NextScondStateNode
+				- node NextScondStateNode pointer
 		*/
-		node const getNextScondStateNode();
+		node* getNextScondStateNode();
 		/*
-			Description: set Distance value
+			Description: set Next First State Node Distance value
 						 between edge and bit
 			Parameters:
-				- __int8 distance value
+				- unsigned __int8 distance value
 			Returns:
 				- bool : return assert value
 		*/
-		bool setDistance(__int8 distance);
+		bool setNextFirstStateNodeDistance(unsigned __int8 distance);
 		/*
-			Description: get Distance value
+			Description: set Next Scond State Node Distance value
+						 between edge and bit
+			Parameters:
+				- unsigned __int8 distance value
+			Returns:
+				- bool : return assert value
+		*/
+		bool setNextScondStateNodeDistance(unsigned __int8 distance);
+		/*
+			Description: get Next First State Node Distance value
 			Parameters:
 				- void
 			Returns:
-				- const __int8 : return distance value
+				- const unsigned __int8 : return distance value
 		*/
-		__int8 const getDistance();
-		~node();					// class destructor
+		unsigned __int8 const getNextFirstStateNodeDistance();
+		/*
+			Description: get Next Scond State Node Distance value
+			Parameters:
+				- void
+			Returns:
+				- const unsigned __int8 : return distance value
+		*/
+		unsigned __int8 const getNextScondStateNodeDistance();
 	private :
 		/*
-			2bit __int8
+			2bit unsigned __int8
 			node state machine value
 			for cal distance
 		*/
-		__int8 state : 2;
+		unsigned __int8 state : 2;
 		/*
 			node NextFirstStateNode value
 			for route first next node
@@ -96,11 +115,19 @@ class node{
 		*/
 		node * NextScondStateNode;
 		/*
-			__int8 distance
+			unsigned __int8 
+			Next First State Node Distance
 			edge distance value
 			between state and bit input
 		*/
-		__int8 distance;
+		unsigned __int8 NextFirstStateNodeDistance;
+		/*
+			unsigned __int8
+			Next Scond State Node Distance
+			edge distance value
+			between state and bit input
+		*/
+		unsigned __int8 NextScondStateNodeDistance;
 
 };
 #endif
