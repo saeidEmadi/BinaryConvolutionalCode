@@ -34,6 +34,15 @@ class decoder {
 		*/
 		node * graphTracer(unsigned __int8 state, unsigned __int8 data, unsigned __int8 level);
 		/*
+			Description: print States.
+			print graph states printer
+			Parameters:
+				- node pointerl
+			Returns:
+				- void
+		*/
+		void printStates(node* n);
+		/*
 			private func logLevel()
 			define print pattern for print
 		*/
