@@ -78,11 +78,11 @@ unsigned __int8 decoder::hammingDistance(unsigned __int8 x, unsigned __int8 y) {
 	__int8 distance = 0;
 	unsigned __int8 xorResult = x ^ y; // XOR of the two unsigned __int8
 	// Count the number of set bits in the XOR result
-	while (xorResult) {
+	while (xorResult > 0) {
 		distance += xorResult & 1;
 		xorResult >>= 1;
 	}
-	return distance;
+	return distance - 1;
 }
 
 void decoder::logLevel() {
