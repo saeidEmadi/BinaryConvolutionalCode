@@ -1,4 +1,5 @@
 #pragma once
+#include "node.h"
 /* Binary Convolutional Codes Decoder */
 class decoder {
 	public:
@@ -13,39 +14,37 @@ class decoder {
 		/*
 			Description: encode one bit of message and return encoded .
 			Parameters:
-				- __int8 received bit
+				- unsigned __int8 received bit
 			Returns:
-				- __int8 decoded message
+				- unsigned __int8 decoded message
 		*/
-		__int8 decode(__int8 recv);
+		unsigned __int8 decode(unsigned __int8 recv);
 		~decoder();					// class destructor
 
 	private:
 		/*
+			Description: graph Tracer.
+			Trace routes of graph
+			Parameters:
+				- unsigned __int8 state
+				- unsigned __int8 data
+				- unsigned __int8 level
+			Returns:
+				- node * | node pointer
+		*/
+		node * graphTracer(unsigned __int8 state, unsigned __int8 data, unsigned __int8 level);
+		/*
 			private func logLevel()
 			define print pattern for print
-			Machine state, input 2 bit
-			decoded 2bit and nextState
 		*/
-		void logLevel(__int8 state, __int8 recv, __int8 encoded, __int8 nextState);
+		void logLevel();
 		/*
 			calculate the Hamming distance between two integers
 			Parameters:
-				- __int8 x
-				- __int8 y
+				- unsigned __int8 x
+				- unsigned __int8 y
 			Returns:
-				- __int8 distance
+				- unsigned __int8 distance
 		*/
-		__int8 hammingDistance(__int8 x, __int8 y);
-		/*
-			calculate the distance for error correction
-			use DFS idea (recursive)
-			Parameters:
-				- int level
-				- __int8 state
-				- __int8 bit
-			Returns:
-				- __int8 distance
-		*/
-		__int8 distanceCal(int level, __int8 state, __int8 bit);
+		unsigned __int8 hammingDistance(unsigned __int8 x, unsigned __int8 y);
 };
