@@ -54,6 +54,15 @@ class decoder {
 		*/
 		node* getMinDistancePaths(unsigned __int8 state, unsigned __int8 data, unsigned __int8 level);
 		/*
+			Description: find min graph distances
+			and print state and value for error-correction
+			Parameters:
+				- node *n | node pointer
+			Returns:
+				- __int8 distance value
+		*/
+		__int8 printStatesMinPath(node* n);
+		/*
 			private func logLevel()
 			define print pattern for print
 		*/
