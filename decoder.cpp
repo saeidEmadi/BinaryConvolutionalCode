@@ -18,9 +18,9 @@ decoder::decoder() {
 
 unsigned __int8 decoder::decode(unsigned __int8 recv) {
 	std::cout << "decoder : " << std::bitset<8>(recv) << std::endl;
-	//node* n = graphTracer(0, recv, 1);
+	node* m = graphTracer(0, recv, 1);
 	node* n = getMinDistancePaths(0, recv, 1);
-	//printStates(n);
+	printStates(m);
 	std::cout << "\nmin dis :: " << std::bitset<8>(printStatesMinPath(n));
 	/*for (int i = 1; n->getNextFirstStateNode() != nullptr; i++) {
 		std::cout << "i : " << i << " | " << std::bitset<8>(n->getNextFirstStateNodeDistance()&0x03) << std::endl;
