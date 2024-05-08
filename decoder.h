@@ -43,6 +43,17 @@ class decoder {
 		*/
 		void printStates(node* n);
 		/*
+			Description: find min graph distances.
+			used this function to refine and remove large distances 
+			Parameters:
+				- unsigned __int8 state
+				- unsigned __int8 data
+				- unsigned __int8 level
+			Returns:
+				- node * | node pointer
+		*/
+		node* getMinDistancePaths(unsigned __int8 state, unsigned __int8 data, unsigned __int8 level);
+		/*
 			private func logLevel()
 			define print pattern for print
 		*/
