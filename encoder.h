@@ -20,6 +20,15 @@ class encoder{
 				- __int8 encoded message
 		*/
 		__int8 const encode(bool bit);
+		/*
+			Description: encode one bit of message
+				return and print encoded bit detail.
+			Parameters:
+				- bool (1: True, 0: False) input bit
+			Returns:
+				- __int8 encoded message
+		*/
+		__int8 const encodeDetail(bool bit);
 		~encoder();					// class destructor
 
 	private : 

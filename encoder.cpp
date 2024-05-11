@@ -12,9 +12,16 @@ encoder::encoder() {
 	state = 0;
 }
 
-__int8 const encoder::encode(bool bit) {
+__int8 const encoder::encodeDetail(bool bit) {
 	__int8 decodedMsg = this->encodedMsg(bit, this->state);
 	this->logLevel(this->state, bit, decodedMsg, this->nextState(bit, this->state));
+	this->state = this->nextState(bit, state);
+	return decodedMsg;
+}
+
+__int8 const encoder::encode(bool bit) {
+	__int8 decodedMsg = this->encodedMsg(bit, this->state);
+	std::cout << std::bitset<2>(decodedMsg);
 	this->state = this->nextState(bit, state);
 	return decodedMsg;
 }
@@ -32,10 +39,10 @@ void encoder::logLevel(const __int8 &state, const bool &bit,
 	const __int8 &decoded, const __int8 &nextState) {
 	std::cout << std::endl <<
 		"[---- bit log ----]" << std::endl <<
-		"  state : " << std::bitset<2>(state) << std::endl <<
+		"  state :     " << std::bitset<2>(state) << std::endl <<
 		"  nextState : " << std::bitset<2>(nextState) << std::endl <<
-		"  bit : " << std::bitset<1>(bit) << std::endl <<
-		"  decoded : " << std::bitset<2>(decoded) << std::endl <<
+		"  bit :        " << std::bitset<1>(bit) << std::endl <<
+		"  decoded :   " << std::bitset<2>(decoded) << std::endl <<
 		"[----         ----]" << std::endl;
 }
 
