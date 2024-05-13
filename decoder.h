@@ -23,6 +23,13 @@ class decoder {
 
 	private:
 		/*
+			Description: print decoded message
+				- node *n | node pointer
+			Returns:
+				- void
+		*/
+		void decodeZero(node* n);
+		/*
 			Description: graph Tracer.
 			Trace routes of graph
 			Parameters:
@@ -33,14 +40,6 @@ class decoder {
 				- node * | node pointer
 		*/
 		node * graphTracer(unsigned __int8 state, unsigned __int8 data, unsigned __int8 level);
-		/*
-			Description: print decoded Path.
-			Parameters:
-				- node pointerl
-			Returns:
-				- void
-		*/
-		void decodeZero(node* n);
 		/*
 			Description: find min graph distances.
 			used this function to refine and remove large distances 
@@ -61,11 +60,6 @@ class decoder {
 				- __int8 distance value
 		*/
 		__int8 printStatesMinPath(node* n);
-		/*
-			private func logLevel()
-			define print pattern for print
-		*/
-		void logLevel();
 		/*
 			calculate the Hamming distance between two integers
 			Parameters:

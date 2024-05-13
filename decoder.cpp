@@ -36,7 +36,7 @@ unsigned __int8 decoder::decode(unsigned __int8 recv) {
 	return 0;
 }
 
-void decodeZero(node* n) {
+void decoder::decodeZero(node* n) {
 	if (n->getNextFirstStateNode() == nullptr && n->getNextScondStateNode() == nullptr) {
 		return ;
 	}
