@@ -50,5 +50,7 @@ int main() {
         decoder d = decoder();
         d.decode(i & 0xFF);
     }
+    // pause console 
+    system("pause");
     return 0;
 }
