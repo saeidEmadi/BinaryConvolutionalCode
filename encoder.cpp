@@ -27,7 +27,7 @@ __int8 const encoder::encode(bool bit) {
 }
 
 __int8 encoder::encodedMsg(const bool& bit, const __int8& state) {
-	return ((((state & 0x1) ^ bit ^ ((state & 0x2) >> 1)) << 1) 
+	return ((((state & 0x1) ^ bit ^ ((state & 0x2) >> 1)) << 1)  \
 		| (((state & 0x1) ^ bit) | 0x0));
 }
 

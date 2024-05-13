@@ -34,14 +34,13 @@ class decoder {
 		*/
 		node * graphTracer(unsigned __int8 state, unsigned __int8 data, unsigned __int8 level);
 		/*
-			Description: print States.
-			print graph states printer
+			Description: print decoded Path.
 			Parameters:
 				- node pointerl
 			Returns:
 				- void
 		*/
-		void printStates(node* n);
+		void decodeZero(node* n);
 		/*
 			Description: find min graph distances.
 			used this function to refine and remove large distances 

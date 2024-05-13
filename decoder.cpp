@@ -18,10 +18,16 @@ decoder::decoder() {
 
 unsigned __int8 decoder::decode(unsigned __int8 recv) {
 	std::cout << "decoder : " << std::bitset<8>(recv) << std::endl;
-	node* m = graphTracer(0, recv, 1);
+	//node* m = graphTracer(0, recv, 1);
 	node* n = getMinDistancePaths(0, recv, 1);
-	printStates(m);
-	std::cout << "\nmin dis :: " << std::bitset<8>(printStatesMinPath(n));
+	__int8 minDistance = printStatesMinPath(n);
+	if (!minDistance){
+		std :: cout << "decoded bits >>  ";
+		decodeZero(n);
+	}else {
+		std::cout << "error Detected" << std::endl;
+		std::cout << "min Distance :  " << (int)minDistance;
+	}
 	/*for (int i = 1; n->getNextFirstStateNode() != nullptr; i++) {
 		std::cout << "i : " << i << " | " << std::bitset<8>(n->getNextFirstStateNodeDistance()&0x03) << std::endl;
 		std::cout << "i : " << i << " | " << std::bitset<8>(n->getNextScondStateNodeDistance() & 0x03) << std::endl;
@@ -30,26 +36,40 @@ unsigned __int8 decoder::decode(unsigned __int8 recv) {
 	return 0;
 }
 
+void decodeZero(node* n) {
+	if (n->getNextFirstStateNode() == nullptr && n->getNextScondStateNode() == nullptr) {
+		return ;
+	}
+	if (n->getNextFirstStateNode() != nullptr && n->getNextScondStateNode() == nullptr) {
+		std::cout << "0";
+		decodeZero(n->getNextFirstStateNode());
+	}
+	else if (n->getNextScondStateNode() != nullptr && n->getNextFirstStateNode() == nullptr) {
+		std::cout << "1";
+		decodeZero(n->getNextScondStateNode());
+	}
+}
+
 __int8 decoder::printStatesMinPath(node* n) {
-	unsigned __int8 nextFirstStateIO = -1,
-		nextScondStateIO = -1;
+	unsigned __int8 nextFirstStateIO = std::numeric_limits<unsigned __int8>::min(),
+		nextScondStateIO = std::numeric_limits<unsigned __int8>::min();
 
 	switch (n->getState()) {
 	case 0:
 		nextFirstStateIO = 0,
-			nextScondStateIO = 3;
+		nextScondStateIO = 3;
 		break;
 	case 2:
-		nextFirstStateIO = 1,
-			nextScondStateIO = 2;
+		nextFirstStateIO = 2,
+		nextScondStateIO = 1;
 		break;
 	case 1:
 		nextFirstStateIO = 3,
-			nextScondStateIO = 0;
+		nextScondStateIO = 0;
 		break;
 	case 3:
-		nextFirstStateIO = 2,
-			nextScondStateIO = 1;
+		nextFirstStateIO = 1,
+		nextScondStateIO = 2;
 		break;
 	}
 	if (n->getNextFirstStateNode() == nullptr && n->getNextScondStateNode() == nullptr) {
@@ -83,19 +103,6 @@ __int8 decoder::printStatesMinPath(node* n) {
 	}
 }
 
-void decoder::printStates(node* n) {
-	if (n->getNextFirstStateNode() == nullptr || n->getNextScondStateNode() == nullptr) {
-		return;
-	}
-	std::cout << "state : " << std::bitset<8>(n->getState()) << std::endl;
-	std::cout << "NextFirstStateNodeDistance : " << std::bitset<8>(n->getNextFirstStateNodeDistance() & 0x03) << std::endl;
-	std::cout << "NextScondStateNodeDistance : " << std::bitset<8>(n->getNextScondStateNodeDistance() & 0x03) << std::endl;
-	std::cout << "getNextFirstStateNode()->getState() : " << std::bitset<8>(n->getNextFirstStateNode()->getState()) << std::endl;
-	std::cout << "getNextScondStateNode()->getState() : " << std::bitset<8>(n->getNextScondStateNode()->getState()) << std::endl;
-	this->printStates(n->getNextFirstStateNode());
-	this->printStates(n->getNextScondStateNode());
-}
-
 node* decoder::getMinDistancePaths(unsigned __int8 state, unsigned __int8 data, unsigned __int8 level) {
 	// return point | break point of recursive loop
 	if (level == MAX_STATE_CEHCK + 2) {
@@ -125,35 +132,35 @@ node* decoder::getMinDistancePaths(unsigned __int8 state, unsigned __int8 data, 
 
 	// set next states value
 	// -1 == null value | initial value
-	unsigned __int8 nextFirstState = -1,
-		nextFirstStateIO = -1,
-		nextScondState = -1,
-		nextScondStateIO = -1;
+	unsigned __int8 nextFirstState = std::numeric_limits<unsigned __int8>::min(),
+		nextFirstStateIO = std::numeric_limits<unsigned __int8>::min(),
+		nextScondState = std::numeric_limits<unsigned __int8>::min(),
+		nextScondStateIO = std::numeric_limits<unsigned __int8>::min();
 
 	switch (state) {
 	case 0:
 		nextFirstState = 0;
 		nextFirstStateIO = 0,
-			nextScondState = 2,
-			nextScondStateIO = 3;
+		nextScondState = 2,
+		nextScondStateIO = 3;
 		break;
 	case 2:
 		nextFirstState = 1;
-		nextFirstStateIO = 1,
-			nextScondState = 3,
-			nextScondStateIO = 2;
+		nextFirstStateIO = 2,
+		nextScondState = 3,
+		nextScondStateIO = 1;
 		break;
 	case 1:
 		nextFirstState = 0;
 		nextFirstStateIO = 3,
-			nextScondState = 2,
-			nextScondStateIO = 0;
+		nextScondState = 2,
+		nextScondStateIO = 0;
 		break;
 	case 3:
 		nextFirstState = 1;
-		nextFirstStateIO = 2,
-			nextScondState = 3,
-			nextScondStateIO = 1;
+		nextFirstStateIO = 1,
+		nextScondState = 3,
+		nextScondStateIO = 2;
 		break;
 	}
 	node* stateNode = new node(state & 0x03);
@@ -201,10 +208,10 @@ node* decoder::graphTracer(unsigned __int8 state, unsigned __int8 data, unsigned
 
 	// set next states value
 	// -1 == null value | initial value
-	unsigned __int8 nextFirstState = -1,
-		nextFirstStateIO = -1,
-		nextScondState = -1,
-		nextScondStateIO = -1;
+	unsigned __int8 nextFirstState = std::numeric_limits<unsigned __int8>::min(),
+		nextFirstStateIO = std::numeric_limits<unsigned __int8>::min(),
+		nextScondState = std::numeric_limits<unsigned __int8>::min(),
+		nextScondStateIO = std::numeric_limits<unsigned __int8>::min();
 
 	switch (state) {
 	case 0:
@@ -215,9 +222,9 @@ node* decoder::graphTracer(unsigned __int8 state, unsigned __int8 data, unsigned
 		break;
 	case 2:
 		nextFirstState = 1;
-		nextFirstStateIO = 1,
+		nextFirstStateIO = 2,
 			nextScondState = 3,
-			nextScondStateIO = 2;
+			nextScondStateIO = 1;
 		break;
 	case 1:
 		nextFirstState = 0;
@@ -235,8 +242,12 @@ node* decoder::graphTracer(unsigned __int8 state, unsigned __int8 data, unsigned
 	node* stateNode = new node(state & 0x03);
 	stateNode->setNextFirstStateNode(*this->graphTracer(nextFirstState, data, level + 1));
 	stateNode->setNextScondStateNode(*this->graphTracer(nextScondState, data, level + 1));
-	stateNode->setNextFirstStateNodeDistance(this->hammingDistance((data >> shiftVal) & 0x03, nextFirstStateIO));
-	stateNode->setNextScondStateNodeDistance(this->hammingDistance((data >> shiftVal) & 0x03, nextScondStateIO));
+	if (stateNode->getNextFirstStateNode() != nullptr) {
+		stateNode->setNextFirstStateNodeDistance(this->hammingDistance((data >> shiftVal) & 0x03, nextFirstStateIO));
+	}
+	if (stateNode->getNextScondStateNode() != nullptr) {
+		stateNode->setNextScondStateNodeDistance(this->hammingDistance((data >> shiftVal) & 0x03, nextScondStateIO));
+	}
 	return stateNode;
 }
 
@@ -248,10 +259,7 @@ unsigned __int8 decoder::hammingDistance(unsigned __int8 x, unsigned __int8 y) {
 		distance += xorResult & 1;
 		xorResult >>= 1;
 	}
-	return distance - 1;
-}
-
-void decoder::logLevel() {
+	return distance;
 }
 
 decoder :: ~decoder() {
